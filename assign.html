@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Clock</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(to bottom, #ff9a9e, #fecfef);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  #clockContainer {
+    margin-top: 20px;
+    font-size: 24px;
+    border: 2px dashed #000;
+    padding: 10px;
+    display: none;
+    animation: fadeIn 1s ease forwards;
+  }
+
+  #clock {
+    margin-top: 10px;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+<body>
+<button id="clockButton" onclick="showWorldClock()">Show World Clock</button>
+<button id="backButton" style="display:none;" onclick="returnToInitialState()">Back</button>
+<div id="clockContainer">
+  <div id="clock"></div>
+</div>
+
+<script>
+var clockShown = false;
+
+function showWorldClock() {
+  if (!clockShown) {
+    var clockContainer = document.getElementById("clockContainer");
+    clockContainer.style.display = "block";
+    clockContainer.style.animation = "fadeIn 1s ease forwards";
+    document.getElementById("clockButton").style.display = "none";
+    document.getElementById("backButton").style.display = "block";
+    displayTime();
+    clockShown = true;
+  }
+}
+
+function displayTime() {
+  var currentTime = new Date();
+  var options = { timeZone: "UTC" };
+  var countries = [
+    { name: "London", timeZone: "Europe/London" },
+    { name: "New York", timeZone: "America/New_York" },
+    { name: "Tokyo", timeZone: "Asia/Tokyo" },
+    { name: "Sydney", timeZone: "Australia/Sydney" },
+    { name: "India", timeZone: "Asia/Kolkata" }
+  ];
+
+  countries.forEach(function(country) {
+    options.timeZone = country.timeZone;
+    var timeString = currentTime.toLocaleTimeString("en-US", options);
+    document.getElementById("clock").innerHTML += "<p>" + country.name + ": " + timeString + "</p>";
+  });
+}
+
+function returnToInitialState() {
+  var clockContainer = document.getElementById("clockContainer");
+  clockContainer.style.animation = "fadeOut 1s ease forwards";
+  setTimeout(function() {
+    clockContainer.style.display = "none";
+  }, 1000);
+  document.getElementById("clockButton").style.display = "block";
+  document.getElementById("backButton").style.display = "none";
+  clockShown = false;
+  // Clear the clock display
+  document.getElementById("clock").innerHTML = "";
+}
+</script>
+</body>
+</html>
